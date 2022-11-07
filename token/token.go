@@ -24,6 +24,8 @@ const (
 	// Keywords
 	FUNCTION = "FUNCTION"
 	LET      = "LET"
+	DEF      = "DEF"
+	END      = "END"
 )
 
 type TokenType string

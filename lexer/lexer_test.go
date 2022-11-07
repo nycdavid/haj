@@ -48,3 +48,47 @@ func TestNextToken(t *testing.T) {
 		}
 	}
 }
+
+func TestDef(t *testing.T) {
+	input := "def foo; end"
+	l := New(input)
+
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.DEF, "def"},
+		{token.IDENT, "foo"},
+		{token.SEMICOLON, ";"},
+		{token.END, "end"},
+	}
+
+	for i, tt := range tests {
+		tok := l.NextToken()
+
+		checkType(t, i, tok.Type, tt.expectedType)
+		checkLiteral(t, i, tok.Literal, tt.expectedLiteral)
+	}
+}
+
+func checkType(t *testing.T, i int, actual token.TokenType, expected token.TokenType) {
+	if actual != expected {
+		t.Fatalf(
+			"tests[%d] - type wrong. expected=%q, got=%q",
+			i,
+			expected,
+			actual,
+		)
+	}
+}
+
+func checkLiteral(t *testing.T, i int, actual string, expected string) {
+	if actual != expected {
+		t.Fatalf(
+			"tests[%d] - literal wrong. expected=%q, got=%q",
+			i,
+			expected,
+			actual,
+		)
+	}
+}
