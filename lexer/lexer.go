@@ -1,7 +1,6 @@
 package lexer
 
 import (
-	"fmt"
 	"token"
 )
 
@@ -38,6 +37,8 @@ func (l *Lexer) readChar() {
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
+	l.skipWhitespace()
+
 	switch l.ch {
 	case '=':
 		tok = newToken(token.ASSIGN, l.ch)
@@ -60,8 +61,10 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Type = token.EOF
 	default:
 		if isLetter(l.ch) {
-			tokt := "foo"
-			fmt.Println(tokt)
+			tok.Literal = l.readIdentifier()
+			tok.Type = token.LookupIdent(tok.Literal)
+
+			return tok
 		} else {
 			tok = newToken(token.ILLEGAL, l.ch)
 		}
@@ -69,6 +72,12 @@ func (l *Lexer) NextToken() token.Token {
 
 	l.readChar()
 	return tok
+}
+
+func (l *Lexer) skipWhitespace() {
+	if l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == 'r' {
+		l.readChar()
+	}
 }
 
 func newToken(tokenType token.TokenType, ch byte) token.Token {
@@ -79,4 +88,12 @@ func isLetter(ch byte) bool {
 	return 'a' <= ch && ch <= 'z' ||
 		'A' <= ch && ch <= 'Z' ||
 		ch == '_'
+}
+
+func (l *Lexer) readIdentifier() string {
+	position := l.position
+	for isLetter(l.ch) {
+		l.readChar()
+	}
+	return l.input[position:l.position]
 }
