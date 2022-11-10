@@ -49,7 +49,7 @@ func TestNextToken(t *testing.T) {
 	}
 }
 
-func TestDef(t *testing.T) {
+func Test_methodIdentifiers(t *testing.T) {
 	input := "def foo; end"
 	l := New(input)
 
@@ -61,6 +61,27 @@ func TestDef(t *testing.T) {
 		{token.IDENT, "foo"},
 		{token.SEMICOLON, ";"},
 		{token.END, "end"},
+	}
+
+	for i, tt := range tests {
+		tok := l.NextToken()
+
+		checkType(t, i, tok.Type, tt.expectedType)
+		checkLiteral(t, i, tok.Literal, tt.expectedLiteral)
+	}
+}
+
+func Test_numbersInArithmeticOp(t *testing.T) {
+	input := "55 + 5"
+	l := New(input)
+
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.INT, "55"},
+		{token.PLUS, "+"},
+		{token.INT, "5"},
 	}
 
 	for i, tt := range tests {
