@@ -61,12 +61,12 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Type = token.EOF
 	default:
 		if isLetter(l.ch) {
-			tok.Literal = l.readIdentifier()
+			tok.Literal = l.consumeIf(isLetter)
 			tok.Type = token.LookupIdent(tok.Literal)
 
 			return tok
 		} else if isInt(l.ch) {
-			tok.Literal = l.readNumber()
+			tok.Literal = l.consumeIf(isInt)
 			tok.Type = token.INT
 		} else {
 			tok = newToken(token.ILLEGAL, l.ch)
@@ -83,17 +83,9 @@ func (l *Lexer) skipWhitespace() {
 	}
 }
 
-func (l *Lexer) readIdentifier() string {
+func (l *Lexer) consumeIf(pred func(byte) bool) string {
 	position := l.position
-	for isLetter(l.ch) {
-		l.readChar()
-	}
-	return l.input[position:l.position]
-}
-
-func (l *Lexer) readNumber() string {
-	position := l.position
-	for isInt(l.ch) {
+	for pred(l.ch) {
 		l.readChar()
 	}
 
