@@ -26,6 +26,7 @@ const (
 	LET      = "LET"
 	DEF      = "DEF"
 	END      = "END"
+	CLASS    = "CLASS"
 )
 
 type TokenType string
@@ -36,10 +37,11 @@ type Token struct {
 }
 
 var keywords = map[string]TokenType{
-	"fn":  FUNCTION,
-	"let": LET,
-	"def": DEF,
-	"end": END,
+	"fn":    FUNCTION,
+	"let":   LET,
+	"def":   DEF,
+	"end":   END,
+	"class": CLASS,
 }
 
 func LookupIdent(ident string) TokenType {

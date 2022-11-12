@@ -78,7 +78,7 @@ func (l *Lexer) NextToken() token.Token {
 }
 
 func (l *Lexer) skipWhitespace() {
-	if l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == 'r' {
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
 		l.readChar()
 	}
 }

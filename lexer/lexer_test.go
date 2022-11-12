@@ -7,7 +7,12 @@ import (
 )
 
 func TestNextToken(t *testing.T) {
-	input := `=+(){},;`
+	input := `=+(){},;
+		class Foo
+			def initialize(arg1, arg2)
+			end
+		end
+	`
 
 	tests := []struct {
 		expectedType    token.TokenType
@@ -21,7 +26,16 @@ func TestNextToken(t *testing.T) {
 		{token.RBRACE, "}"},
 		{token.COMMA, ","},
 		{token.SEMICOLON, ";"},
-		{token.EOF, ""},
+		{token.CLASS, "class"},
+		{token.IDENT, "Foo"},
+		{token.DEF, "def"},
+		{token.IDENT, "initialize"},
+		{token.LPAREN, "("},
+		{token.IDENT, "arg1"},
+		{token.IDENT, "arg2"},
+		{token.RPAREN, ")"},
+		{token.END, "end"},
+		{token.END, "end"},
 	}
 
 	l := New(input)
