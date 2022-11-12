@@ -35,7 +35,6 @@ func TestNextToken(t *testing.T) {
 		{token.IDENT, "arg2"},
 		{token.RPAREN, ")"},
 		{token.END, "end"},
-		{token.END, "end"},
 	}
 
 	l := New(input)
