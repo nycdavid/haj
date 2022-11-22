@@ -6,10 +6,32 @@ import (
 	"token"
 )
 
+func Test_IdentsWithNumbersOrUnderscores(t *testing.T) {
+	input := `arg_a arg_1 arg1`
+
+	tests := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.IDENT, "arg_a"},
+		{token.IDENT, "arg_1"},
+		{token.IDENT, "arg1"},
+	}
+
+	l := New(input)
+
+	for i, tt := range tests {
+		tok := l.NextToken()
+
+		checkType(t, i, tok.Type, tt.expectedType)
+		checkLiteral(t, i, tok.Literal, tt.expectedLiteral)
+	}
+}
+
 func TestNextToken(t *testing.T) {
 	input := `=+(){},;
 		class Foo
-			def initialize(arg1, arg2)
+			def initialize(arga, argb)
 			end
 		end
 	`
@@ -31,8 +53,9 @@ func TestNextToken(t *testing.T) {
 		{token.DEF, "def"},
 		{token.IDENT, "initialize"},
 		{token.LPAREN, "("},
-		{token.IDENT, "arg1"},
-		{token.IDENT, "arg2"},
+		{token.IDENT, "arga"},
+		{token.COMMA, ","},
+		{token.IDENT, "argb"},
 		{token.RPAREN, ")"},
 		{token.END, "end"},
 	}
@@ -42,23 +65,8 @@ func TestNextToken(t *testing.T) {
 	for i, tt := range tests {
 		tok := l.NextToken()
 
-		if tok.Type != tt.expectedType {
-			t.Fatalf(
-				"tests[%d] - tokentype wrong. expected=%q, got=%q",
-				i,
-				tt.expectedType,
-				tok.Type,
-			)
-		}
-
-		if tok.Literal != tt.expectedLiteral {
-			t.Fatalf(
-				"tests[%d] - literal wrong. expected=%q, got=%q",
-				i,
-				tt.expectedLiteral,
-				tok.Literal,
-			)
-		}
+		checkType(t, i, tok.Type, tt.expectedType)
+		checkLiteral(t, i, tok.Literal, tt.expectedLiteral)
 	}
 }
 
