@@ -1,10 +1,36 @@
 package lexer
 
 import (
+	"fmt"
 	"testing"
 
 	"token"
 )
+
+func Test_LexNumbersInIdent(t *testing.T) {
+	l := New("arg_1")
+
+	var toks []token.Token
+
+	for l.ch != 0 {
+		toks = append(toks, l.NextToken())
+	}
+
+	got := toks
+	expected := []token.Token{
+		token.Token{Type: token.IDENT, Literal: "arg_1"},
+	}
+
+	if len(got) != len(expected) {
+		t.Fatalf("Expected %d, got %d", len(expected), len(got))
+	}
+
+	for i, tok := range expected {
+		if tok.Type != got[i].Type || tok.Literal != got[i].Literal {
+			t.Fatal("Mismatching type or literal")
+		}
+	}
+}
 
 func Test_IdentsWithNumbersOrUnderscores(t *testing.T) {
 	input := `arg_a arg_1 arg1`
@@ -20,12 +46,16 @@ func Test_IdentsWithNumbersOrUnderscores(t *testing.T) {
 
 	l := New(input)
 
+	var toks []token.Token
+
 	for i, tt := range tests {
 		tok := l.NextToken()
+		toks = append(toks, tok)
 
 		checkType(t, i, tok.Type, tt.expectedType)
 		checkLiteral(t, i, tok.Literal, tt.expectedLiteral)
 	}
+	fmt.Println("foo")
 }
 
 func TestNextToken(t *testing.T) {
