@@ -57,7 +57,7 @@ func Test_IdentsWithNumbersOrUnderscores(t *testing.T) {
 }
 
 func TestNextToken(t *testing.T) {
-	input := `=+(){},;
+	input := `=+(){},;!/*<>
 		class Foo
 			def initialize(arga, argb)
 			end
@@ -76,6 +76,11 @@ func TestNextToken(t *testing.T) {
 		{token.RBRACE, "}"},
 		{token.COMMA, ","},
 		{token.SEMICOLON, ";"},
+		{token.BANG, "!"},
+		{token.SLASH, "/"},
+		{token.ASTERISK, "*"},
+		{token.LT, "<"},
+		{token.GT, ">"},
 		{token.CLASS, "class"},
 		{token.IDENT, "Foo"},
 		{token.DEF, "def"},
