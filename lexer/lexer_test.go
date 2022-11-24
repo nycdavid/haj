@@ -31,6 +31,16 @@ func Test_LexNumbersInIdent(t *testing.T) {
 	}
 }
 
+func Test_peekChar(t *testing.T) {
+	l := New("arg_1")
+
+	nextCh := l.peekChar()
+
+	if nextCh != 'r' {
+		t.Fatal("doesn't match")
+	}
+}
+
 func Test_IdentsWithNumbersOrUnderscores(t *testing.T) {
 	input := `arg_a arg_1 arg1`
 
@@ -60,6 +70,8 @@ func TestNextToken(t *testing.T) {
 	input := `=+(){},;!/*<>
 		class Foo
 			def initialize(arga, argb)
+				a == b
+				a != b
 			end
 		end
 	`
@@ -81,8 +93,10 @@ func TestNextToken(t *testing.T) {
 		{token.ASTERISK, "*"},
 		{token.LT, "<"},
 		{token.GT, ">"},
+
 		{token.CLASS, "class"},
 		{token.IDENT, "Foo"},
+
 		{token.DEF, "def"},
 		{token.IDENT, "initialize"},
 		{token.LPAREN, "("},
@@ -90,6 +104,15 @@ func TestNextToken(t *testing.T) {
 		{token.COMMA, ","},
 		{token.IDENT, "argb"},
 		{token.RPAREN, ")"},
+
+		{token.IDENT, "a"},
+		{token.EQ, "=="},
+		{token.IDENT, "b"},
+
+		{token.IDENT, "a"},
+		{token.NOT_EQ, "!="},
+		{token.IDENT, "b"},
+
 		{token.END, "end"},
 	}
 
