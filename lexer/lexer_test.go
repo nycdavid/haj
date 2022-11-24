@@ -1,7 +1,6 @@
 package lexer
 
 import (
-	"fmt"
 	"testing"
 
 	"token"
@@ -55,7 +54,6 @@ func Test_IdentsWithNumbersOrUnderscores(t *testing.T) {
 		checkType(t, i, tok.Type, tt.expectedType)
 		checkLiteral(t, i, tok.Literal, tt.expectedLiteral)
 	}
-	fmt.Println("foo")
 }
 
 func TestNextToken(t *testing.T) {
