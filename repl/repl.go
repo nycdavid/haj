@@ -3,10 +3,10 @@ package repl
 import (
 	"bufio"
 	"fmt"
-	"go/token"
 	"io"
 
-	"lexer"
+	"haj/lexer"
+	"haj/token"
 )
 
 const PROMPT = ">>> "
@@ -26,7 +26,7 @@ func Start(in io.Reader, out io.Writer) {
 		l := lexer.New(line)
 
 		for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
-			fmt.Pritnf("%+v\n", tok)
+			fmt.Printf("%+v\n", tok)
 		}
 	}
 }
