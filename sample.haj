@@ -1,0 +1,5 @@
+bar = def foo(a, b)
+	"Some string"
+end
+
+
