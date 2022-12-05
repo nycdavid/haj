@@ -1,5 +1,7 @@
 package ast
 
+import "haj/token"
+
 type Node interface {
 	TokenLiteral() string
 }
