@@ -94,6 +94,8 @@ func (l *Lexer) NextToken() token.Token {
 		} else if isInt(l.ch) {
 			tok.Literal = l.consumeIf(isInt)
 			tok.Type = token.INT
+
+			return tok
 		} else {
 			tok = newToken(token.ILLEGAL, l.ch)
 		}
