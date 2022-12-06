@@ -3,8 +3,35 @@ package lexer
 import (
 	"testing"
 
-	"token"
+	"haj/token"
 )
+
+func Test_HandleWhitespace(t *testing.T) {
+	l := New("5+5")
+
+	var toks []token.Token
+
+	for l.ch != 0 {
+		toks = append(toks, l.NextToken())
+	}
+
+	got := toks
+
+	expected := []struct {
+		expectedType    token.TokenType
+		expectedLiteral string
+	}{
+		{token.INT, "5"},
+		{token.PLUS, "+"},
+		{token.INT, "5"},
+	}
+
+	for i, tok := range expected {
+		if tok.expectedType != got[i].Type || tok.expectedLiteral != got[i].Literal {
+			t.Fatal("Mismatching type or literal")
+		}
+	}
+}
 
 func Test_LexNumbersInIdent(t *testing.T) {
 	l := New("arg_1")
