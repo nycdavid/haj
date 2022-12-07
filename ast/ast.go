@@ -28,6 +28,7 @@ func (p *Program) TokenLiteral() string {
 	}
 }
 
+// AssignStatement implements the Statement interface
 type AssignStatement struct {
 	Token token.Token
 	Name  *Identifier
@@ -41,6 +42,7 @@ func (as *AssignStatement) TokenLiteral() string {
 	return as.Token.Literal
 }
 
+// Implements the Expression interface
 type Identifier struct {
 	Token token.Token
 	Value string
