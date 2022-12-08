@@ -47,7 +47,7 @@ foobar = 838383
 func testAssignStatement(t *testing.T, s ast.Statement, name string) bool {
 	assignStmt, ok := s.(*ast.AssignStatement)
 	if !ok {
-		t.Errorf("s not *ast.LetStatement. got=%T", s)
+		t.Errorf("s not *ast.AssignStatement. got=%T", s)
 		return false
 	}
 
