@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"haj/ast"
 	"haj/lexer"
 	"haj/token"
@@ -9,17 +10,35 @@ import (
 type Parser struct {
 	l *lexer.Lexer
 
+	errors    []string
 	curToken  token.Token
 	peekToken token.Token
 }
 
 func New(l *lexer.Lexer) *Parser {
-	p := &Parser{l: l}
+	p := &Parser{
+		l:      l,
+		errors: []string{},
+	}
 
 	p.nextToken()
 	p.nextToken()
 
 	return p
+}
+
+func (p *Parser) Errors() []string {
+	return p.errors
+}
+
+func (p *Parser) peekError(t token.TokenType) {
+	msg := fmt.Sprintf(
+		"expected next token to be %s, got %s instead",
+		t,
+		p.peekToken.Type,
+	)
+
+	p.errors = append(p.errors, msg)
 }
 
 func (p *Parser) nextToken() {
@@ -46,10 +65,10 @@ func (p *Parser) parseStatement() ast.Statement {
 	curType := p.curToken.Type
 
 	/*
-		[TODO]: This works in parsing assign statements right now because it's
-		the only type of statement we have. It'll break when we start parsing methods
-		definitions because a method, although parsed as an IDENT, shouldn't be treated
-		as an assignment statement.
+		TODO: This works in parsing assign statements right now because it's
+			the only type of statement we have. It'll break when we start parsing method
+			definitions (among other things) because a method, although parsed as an IDENT,
+			shouldn't be treated as an assignment statement.
 	*/
 	if curType == token.IDENT {
 		return p.parseAssignStatement()
@@ -71,6 +90,7 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.nextToken()
 		return true
 	} else {
+		p.peekError(t)
 		return false
 	}
 }
