@@ -70,7 +70,7 @@ func (p *Parser) parseStatement() ast.Statement {
 			definitions (among other things) because a method, although parsed as an IDENT,
 			shouldn't be treated as an assignment statement.
 	*/
-	if curType == token.IDENT {
+	if curType == token.IDENT && p.peekToken.Type == token.ASSIGN {
 		return p.parseAssignStatement()
 	}
 
@@ -81,6 +81,10 @@ func (p *Parser) parseAssignStatement() *ast.AssignStatement {
 	stmt := &ast.AssignStatement{Token: p.curToken}
 
 	stmt.Name = &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
+
+	if !p.expectPeek(token.ASSIGN) {
+		return nil
+	}
 
 	return stmt
 }
