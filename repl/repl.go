@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"haj/lexer"
+	"haj/parser"
 	"haj/token"
 )
 
@@ -29,6 +30,9 @@ func Start(in io.Reader, out io.Writer) {
 		}
 
 		l := lexer.New(line)
+		p := parser.New(l)
+
+		p.ParseProgram()
 
 		for tok := l.NextToken(); tok.Type != token.EOF; tok = l.NextToken() {
 			fmt.Printf("%+v\n", tok)
