@@ -47,7 +47,7 @@ func (as *AssignStatement) TokenLiteral() string {
 */
 
 type ReturnStatement struct {
-	token.Token
+	Token       token.Token
 	ReturnValue Expression
 }
 

@@ -2,6 +2,7 @@ package parser
 
 import (
 	"haj/ast"
+	"haj/token"
 	"testing"
 
 	"haj/lexer"
@@ -57,11 +58,20 @@ return 993322;
 
 	prog := p.ParseProgram()
 
-	expected := 3
-	got := len(prog.Statements)
+	expectedCt := 3
+	got := prog.Statements
 
-	if expected != got {
-		t.Errorf("expected %d statements, got %d", expected, got)
+	if expectedCt != len(got) {
+		t.Errorf("expected %d statements, got %d", expectedCt, got)
+	}
+	for _, s := range got {
+		retStmt, ok := s.(*ast.ReturnStatement)
+		if !ok {
+			t.Errorf("s not *ast.ReturnStatement, got=%T", s)
+		}
+		if retStmt.Token.Type != token.RETURN {
+			t.Errorf("expected '%s' token, but got '%s'", token.RETURN, retStmt.Token.Type)
+		}
 	}
 }
 
