@@ -45,6 +45,28 @@ foobar = 838383
 	}
 }
 
+func TestReturnStatements(t *testing.T) {
+	input := `
+return 5;
+return 10;
+return 993322;
+`
+
+	l := lexer.New(input)
+	p := New(l)
+
+	prog := p.ParseProgram()
+
+	expected := 3
+	got := len(prog.Statements)
+
+	if expected != got {
+		t.Errorf("expected %d statements, got %d", expected, got)
+	}
+}
+
+func UNUSED(x ...interface{}) {}
+
 func testAssignStatement(t *testing.T, s ast.Statement, name string) bool {
 	assignStmt, ok := s.(*ast.AssignStatement)
 	if !ok {
