@@ -61,6 +61,25 @@ func (rs *ReturnStatement) TokenLiteral() string {
 	ReturnStatement struct
 */
 
+/*
+ExpressionStatement struct
+*/
+
+type ExpressionStatement struct {
+	Token      token.Token
+	Expression Expression
+}
+
+func (es *ExpressionStatement) statementNode() {}
+
+func (es *ExpressionStatement) TokenLiiteral() string {
+	return es.Token.Literal
+}
+
+/*
+	ExpressionStatement struct
+*/
+
 // Implements the Expression interface
 type Identifier struct {
 	Token token.Token
