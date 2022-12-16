@@ -56,6 +56,22 @@ func (as *AssignStatement) TokenLiteral() string {
 	return as.Token.Literal
 }
 
+func (as *AssignStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(as.TokenLiteral() + " ")
+	out.WriteString(as.Name.String())
+	out.WriteString(" = ")
+
+	if as.Value != nil {
+		out.WriteString(as.Value.String())
+	}
+
+	out.WriteString(";")
+
+	return out.String()
+}
+
 /*
 	ReturnStatement struct
 */
@@ -69,6 +85,20 @@ func (rs *ReturnStatement) statementNode() {}
 
 func (rs *ReturnStatement) TokenLiteral() string {
 	return rs.Token.Literal
+}
+
+func (rs *ReturnStatement) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(rs.TokenLiteral() + " ")
+
+	if rs.ReturnValue != nil {
+		out.WriteString(rs.ReturnValue.String())
+	}
+
+	out.WriteString(";")
+
+	return out.String()
 }
 
 /*
@@ -90,6 +120,14 @@ func (es *ExpressionStatement) TokenLiiteral() string {
 	return es.Token.Literal
 }
 
+func (es *ExpressionStatement) String() string {
+	if es.Expression != nil {
+		return es.Expression.String()
+	}
+
+	return ""
+}
+
 /*
 	ExpressionStatement struct
 */
@@ -105,4 +143,8 @@ func (i *Identifier) expressionNode() {
 
 func (i *Identifier) TokenLiteral() string {
 	return i.Token.Literal
+}
+
+func (i *Identifier) String() string {
+	return i.Value
 }
