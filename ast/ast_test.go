@@ -1,13 +1,25 @@
 package ast
 
 import (
-	"fmt"
+	"haj/token"
 	"testing"
 )
 
-func Test_Ast(t *testing.T) {
-	p := &Program{}
-
-	str := p.TokenLiteral()
-	fmt.Println(str)
+func TestString(t *testing.T) {
+	program := &Program{
+		Statements: []Statement{
+			&AssignStatement{
+				Name: &Identifier{
+					Token: token.Token{Type: token.IDENT, Literal: "foo"},
+					Value: "foo",
+				},
+				Value: &Identifier{
+					Token: token.Token{Type: token.IDENT, Literal: "bar"},
+					Value: "bar",
+				},
+			},
+		},
+	}
 }
+
+func UNUSED(x ...interface{}) {}
