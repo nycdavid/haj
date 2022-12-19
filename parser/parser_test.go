@@ -1,11 +1,11 @@
 package parser
 
 import (
-	"haj/ast"
-	"haj/token"
 	"testing"
 
+	"haj/ast"
 	"haj/lexer"
+	"haj/token"
 )
 
 func TestAssignStatements(t *testing.T) {
