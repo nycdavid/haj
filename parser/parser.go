@@ -15,6 +15,12 @@ type Parser struct {
 	peekToken token.Token
 }
 
+type (
+	prefixParseFn func() ast.Expression
+	infixParseFn  func(ast.Expression) ast.Expression
+	// ast.Expression argument is the LEFT-hand side of the infix operator
+)
+
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{
 		l:      l,
